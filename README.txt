@@ -25,3 +25,12 @@ Included features:
 
 To change map location:
 Open contact/index.html and replace the Google Maps search query with the exact office address or coordinates.
+
+
+IMPORTANT FIX:
+This version uses relative asset paths, so CSS/JS will load correctly even when you open it from a subfolder, local server, GitHub Pages, or public_html.
+
+For best testing, open it with a local server instead of double-clicking files:
+- VS Code Live Server, or
+- python -m http.server 8000
+Then open http://localhost:8000/
