@@ -1,46 +1,187 @@
-
-(function(){
-  const $=(s,c=document)=>c.querySelector(s);
-  const $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
-  const body=document.body;
-  const navToggle=$('.nav-toggle');
-  const navMenu=$('#navMenu');
-  const header=$('[data-header]');
-  const progress=$('#siteProgress');
-  const year=$('#year');
-  const modal=$('#enquiryModal');
-  const toast=$('#toast');
-  const backTop=$('#backTop');
-  const compareDock=$('#compareDock');
-  const compareText=$('#compareText');
-  const clearCompare=$('#clearCompare');
-  const whatsappNumber='923219257825';
-  const compareItems=[];
-  if(year) year.textContent=new Date().getFullYear();
-  const showToast=(msg)=>{ if(!toast) return; toast.textContent=msg; toast.classList.add('is-visible'); window.clearTimeout(showToast.timer); showToast.timer=window.setTimeout(()=>toast.classList.remove('is-visible'),2800); };
-  const closeMenu=()=>{ navMenu?.classList.remove('is-open'); navToggle?.classList.remove('is-open'); navToggle?.setAttribute('aria-expanded','false'); body.classList.remove('menu-open'); };
-  navToggle?.addEventListener('click',()=>{ const open=!navMenu.classList.contains('is-open'); navMenu.classList.toggle('is-open',open); navToggle.classList.toggle('is-open',open); navToggle.setAttribute('aria-expanded',String(open)); body.classList.toggle('menu-open',open); });
-  $$('.nav__menu a').forEach(a=>a.addEventListener('click',closeMenu));
-  $$('[data-dropdown]').forEach(drop=>{ const btn=$('.dropdown__button',drop); btn?.addEventListener('click',(e)=>{ e.preventDefault(); const open=!drop.classList.contains('is-open'); $$('[data-dropdown]').forEach(d=>{ if(d!==drop){ d.classList.remove('is-open'); $('.dropdown__button',d)?.setAttribute('aria-expanded','false'); }}); drop.classList.toggle('is-open',open); btn.setAttribute('aria-expanded',String(open)); }); });
-  document.addEventListener('click',(e)=>{ if(!e.target.closest('[data-dropdown]')) $$('[data-dropdown]').forEach(d=>{d.classList.remove('is-open'); $('.dropdown__button',d)?.setAttribute('aria-expanded','false');}); if(navMenu?.classList.contains('is-open') && !e.target.closest('.nav') && !e.target.closest('#navMenu')) closeMenu(); });
-  const updateScroll=()=>{ const y=window.scrollY||document.documentElement.scrollTop; header?.classList.toggle('is-scrolled',y>20); backTop?.classList.toggle('is-visible',y>520); if(progress){ const h=document.documentElement.scrollHeight-window.innerHeight; progress.style.width=h>0?((y/h)*100)+'%':'0%'; }};
-  updateScroll(); window.addEventListener('scroll',updateScroll,{passive:true}); backTop?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-  const openModal=(product='')=>{ if(!modal) return; modal.classList.add('is-open'); modal.setAttribute('aria-hidden','false'); body.style.overflow='hidden'; if(product){ const select=$('[data-product-select]',modal); if(select){ const match=Array.from(select.options).find(o=>o.textContent===product); if(match) select.value=product; }} setTimeout(()=>modal.querySelector('input,select,textarea,button')?.focus(),80); };
-  const closeModal=()=>{ if(!modal) return; modal.classList.remove('is-open'); modal.setAttribute('aria-hidden','true'); body.style.overflow=''; };
-  document.addEventListener('click',(e)=>{ const opener=e.target.closest('[data-open-modal]'); if(opener){ openModal(opener.getAttribute('data-product')||''); } if(e.target.closest('[data-close-modal]')) closeModal(); if(e.target===modal) closeModal(); });
-  document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeModal(); closeMenu(); }});
-  $$('[data-copy]').forEach(btn=>btn.addEventListener('click',async()=>{ const value=btn.getAttribute('data-copy')||''; try{ await navigator.clipboard.writeText(value); showToast('Copied: '+value); }catch{ showToast(value); } }));
-  $$('form[data-contact-form]').forEach(form=>{ form.addEventListener('submit',(e)=>{ e.preventDefault(); const data=new FormData(form); const name=(data.get('name')||'').toString().trim(); const phone=(data.get('phone')||'').toString().trim(); const email=(data.get('email')||'').toString().trim(); const product=(data.get('product')||'General Packaging').toString().trim(); const quantity=(data.get('quantity')||'Not shared').toString().trim(); const message=(data.get('message')||'').toString().trim(); if(!name || !phone || !message){ showToast('Please add name, phone and message.'); return; } const text=[ 'Hello Pak Ar International,', '', 'Name: '+name, 'Phone: '+phone, 'Email: '+(email||'Not provided'), 'Product: '+product, 'Quantity: '+quantity, 'Message: '+message ].join('\n'); window.open('https://wa.me/'+whatsappNumber+'?text='+encodeURIComponent(text),'_blank','noopener,noreferrer'); form.reset(); showToast('WhatsApp message is ready.'); closeModal(); }); });
-  $$('.faq-question').forEach(btn=>btn.addEventListener('click',()=>{ const item=btn.closest('.faq-item'); const open=!item.classList.contains('is-open'); item.classList.toggle('is-open',open); btn.setAttribute('aria-expanded',String(open)); const mark=btn.querySelector('b'); if(mark) mark.textContent=open?'−':'+'; }));
-  const faqSearch=$('[data-faq-search]'); const faqItems=$$('[data-faq-item]'); const faqEmpty=$('[data-faq-empty]'); faqSearch?.addEventListener('input',()=>{ const q=faqSearch.value.toLowerCase().trim(); let shown=0; faqItems.forEach(item=>{ const match=item.textContent.toLowerCase().includes(q); item.style.display=match?'':'none'; if(match) shown++; }); faqEmpty?.classList.toggle('is-visible',shown===0); });
-  const productSearch=$('[data-product-search]'); const filterBtns=$$('[data-filter]'); const cards=$$('[data-product-card]'); const noResults=$('[data-no-results]'); let activeFilter='all'; const applyFilters=()=>{ const q=(productSearch?.value||'').toLowerCase().trim(); let visible=0; cards.forEach(card=>{ const text=(card.textContent+' '+(card.dataset.title||'')).toLowerCase(); const cat=(card.dataset.category||'').toLowerCase(); const matchSearch=!q||text.includes(q); const matchFilter=activeFilter==='all'||cat.includes(activeFilter); const show=matchSearch&&matchFilter; card.style.display=show?'':'none'; if(show) visible++; }); noResults?.classList.toggle('is-visible',visible===0); };
-  productSearch?.addEventListener('input',applyFilters); filterBtns.forEach(btn=>btn.addEventListener('click',()=>{ filterBtns.forEach(b=>b.classList.remove('is-active')); btn.classList.add('is-active'); activeFilter=btn.getAttribute('data-filter')||'all'; applyFilters(); }));
-  const updateCompare=()=>{ if(!compareDock||!compareText) return; compareText.textContent=compareItems.length?compareItems.join(' · '):'No product selected'; compareDock.classList.toggle('is-visible',compareItems.length>0); };
-  $$('.compare-btn').forEach(btn=>btn.addEventListener('click',()=>{ const name=btn.getAttribute('data-compare')||''; const idx=compareItems.indexOf(name); if(idx>-1){ compareItems.splice(idx,1); btn.classList.remove('is-added'); } else { if(compareItems.length>=3){ showToast('You can compare up to 3 products.'); return; } compareItems.push(name); btn.classList.add('is-added'); } updateCompare(); }));
-  clearCompare?.addEventListener('click',()=>{ compareItems.splice(0); $$('.compare-btn').forEach(b=>b.classList.remove('is-added')); updateCompare(); });
-  const guideSelect=$('[data-guide-select]'); const guideResult=$('[data-guide-result]'); const guides={ retail:['Suggested: Eco Friendly Poly Bags','A practical starting point for retail packaging with custom print and size options.'], courier:['Suggested: Online Flyer Bags','Best suited for e-commerce dispatch, courier parcels and order fulfilment.'], premium:['Suggested: EVA Frosted or PVC Bags','A clean choice for visible product presentation and premium display packaging.'], promo:['Suggested: Non Woven Bags','Reusable branded bags work well for events, campaigns and giveaways.'], food:['Suggested: Laminated Printed Poly Bags','Laminated finish supports better shelf impact and product presentation.'] };
-  guideSelect?.addEventListener('change',()=>{ const item=guides[guideSelect.value]||guides.retail; if(guideResult){ guideResult.innerHTML='<strong>'+item[0]+'</strong><p>'+item[1]+'</p>'; }});
-  $$('[data-tabs]').forEach(tabs=>{ const buttons=$$('[data-tab]',tabs); const panels=$$('[data-panel]',tabs); buttons.forEach(btn=>btn.addEventListener('click',()=>{ const key=btn.getAttribute('data-tab'); buttons.forEach(b=>b.classList.toggle('is-active',b===btn)); panels.forEach(p=>p.classList.toggle('is-active',p.getAttribute('data-panel')===key)); })); });
-  const counters=$$('[data-count]'); const runCounter=(el)=>{ const target=Number(el.getAttribute('data-count'))||0; const suffix=el.getAttribute('data-suffix')||''; const duration=950; const start=performance.now(); const tick=(now)=>{ const progress=Math.min((now-start)/duration,1); const eased=1-Math.pow(1-progress,3); el.textContent=Math.floor(eased*target)+suffix; if(progress<1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
-  const reveals=$$('.reveal'); if('IntersectionObserver' in window){ const io=new IntersectionObserver(entries=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('is-visible'); if(entry.target.matches('[data-count]')) runCounter(entry.target); io.unobserve(entry.target); } }); },{threshold:.12}); reveals.forEach(el=>io.observe(el)); counters.forEach(el=>io.observe(el)); } else { reveals.forEach(el=>el.classList.add('is-visible')); counters.forEach(runCounter); }
-})();
+const body = document.body;
+const header = document.querySelector('.header');
+const progress = document.querySelector('.top-progress');
+const backTop = document.querySelector('.back-top');
+const menuBtn = document.querySelector('.menu-btn');
+const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+const products = [
+  {name:'Eco-Friendly Poly Bags', url:'products/eco-friendly-poly-bags/', img:'assets/images/eco-biodegradable.webp', tags:'biodegradable compostable sustainable retail shopping'},
+  {name:'EVA Frosted Poly Bags', url:'products/eva-frosted-poly-bags/', img:'assets/images/eva-frosted.webp', tags:'frosted eva zip clothing textile apparel'},
+  {name:'Online Flyer Bags', url:'products/online-flyer-bags/', img:'assets/images/flyer-bags.webp', tags:'courier flyer ecommerce glue pocket parcel'},
+  {name:'PVC Bags', url:'products/pvc-bags/', img:'assets/images/pvc-bags.webp', tags:'pvc transparent premium apparel textile'},
+  {name:'Non-Woven Bags', url:'products/non-woven-bags/', img:'assets/images/nonwoven-bags.webp', tags:'non woven shopping grocery promotional'},
+  {name:'Laminated Printed Poly Bags', url:'products/laminated-printed-poly-bags/', img:'assets/images/laminated-print.webp', tags:'laminated printed fashion retail custom'}
+];
+const prefix = document.documentElement.dataset.pathPrefix || '';
+function asset(path){ return prefix + path; }
+function go(path){ window.location.href = prefix + path; }
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  header?.classList.toggle('is-scrolled', y > 10);
+  backTop?.classList.toggle('show', y > 650);
+  if(progress){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = h > 0 ? `${(y / h) * 100}%` : '0%';
+  }
+});
+menuBtn?.addEventListener('click', () => {
+  const open = body.classList.toggle('menu-open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+navItems.forEach(item => {
+  const link = item.querySelector('.nav-link');
+  link?.addEventListener('click', e => {
+    if(window.matchMedia('(max-width: 940px)').matches){
+      e.preventDefault();
+      item.classList.toggle('open');
+    }
+  });
+});
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', () => body.classList.remove('menu-open'));
+});
+backTop?.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+const slides = Array.from(document.querySelectorAll('.hero-slide'));
+const dots = Array.from(document.querySelectorAll('.dot'));
+let slideIndex = 0;
+function showSlide(i){
+  if(!slides.length) return;
+  slideIndex = (i + slides.length) % slides.length;
+  slides.forEach((s,idx)=>s.classList.toggle('active', idx===slideIndex));
+  dots.forEach((d,idx)=>d.classList.toggle('active', idx===slideIndex));
+}
+dots.forEach((dot,i)=>dot.addEventListener('click',()=>showSlide(i)));
+if(slides.length){setInterval(()=>showSlide(slideIndex+1), 5600)}
+const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); } });
+},{threshold:.12}) : null;
+document.querySelectorAll('.reveal').forEach(el => revealObserver ? revealObserver.observe(el) : el.classList.add('in'));
+const counterObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = Number(el.dataset.count || 0);
+    const suffix = el.dataset.suffix || '';
+    let start = 0;
+    const step = Math.max(1, Math.ceil(target / 70));
+    const timer = setInterval(() => {
+      start += step;
+      if(start >= target){ start = target; clearInterval(timer); }
+      el.textContent = `${start}${suffix}`;
+    }, 18);
+    counterObserver.unobserve(el);
+  });
+},{threshold:.35}) : null;
+document.querySelectorAll('[data-count]').forEach(el => counterObserver ? counterObserver.observe(el) : el.textContent = `${el.dataset.count}${el.dataset.suffix || ''}`);
+function openModal(selector){
+  const modal = document.querySelector(selector);
+  if(!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(modal){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('[data-open-modal]').forEach(btn => btn.addEventListener('click', () => {
+  const target = btn.dataset.openModal;
+  const product = btn.dataset.product;
+  openModal(target);
+  if(product){
+    const select = document.querySelector(`${target} select[name="product"]`);
+    if(select) select.value = product;
+  }
+}));
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', e => { if(e.target.matches('.modal-backdrop,.modal-close')) closeModal(modal); });
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.querySelectorAll('.modal.open').forEach(closeModal);
+});
+const searchInput = document.querySelector('#siteSearch');
+const suggestions = document.querySelector('#suggestions');
+function renderSuggestions(q=''){
+  if(!suggestions) return;
+  const query = q.trim().toLowerCase();
+  const list = products.filter(p => !query || `${p.name} ${p.tags}`.toLowerCase().includes(query)).slice(0,6);
+  suggestions.innerHTML = list.map(p => `
+    <a class="suggestion" href="${asset(p.url)}">
+      <img src="${asset(p.img)}" alt="${p.name}">
+      <span><b>${p.name}</b><small>View product details and request a quote</small></span>
+    </a>`).join('');
+}
+searchInput?.addEventListener('input', e => renderSuggestions(e.target.value));
+document.querySelector('[data-open-modal="#searchModal"]')?.addEventListener('click', () => setTimeout(()=>{renderSuggestions(''); searchInput?.focus();},60));
+const productSearch = document.querySelector('#productSearch');
+const productCards = Array.from(document.querySelectorAll('[data-product-card]'));
+const filterButtons = document.querySelectorAll('[data-filter]');
+let activeFilter = 'all';
+function filterProducts(){
+  const q = (productSearch?.value || '').toLowerCase().trim();
+  productCards.forEach(card => {
+    const cats = card.dataset.category || '';
+    const text = card.textContent.toLowerCase();
+    const byFilter = activeFilter === 'all' || cats.includes(activeFilter);
+    const bySearch = !q || text.includes(q);
+    card.dataset.hidden = String(!(byFilter && bySearch));
+  });
+}
+productSearch?.addEventListener('input', filterProducts);
+filterButtons.forEach(btn => btn.addEventListener('click', () => {
+  filterButtons.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  filterProducts();
+}));
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+});
+const faqSearch = document.querySelector('#faqSearch');
+faqSearch?.addEventListener('input', e => {
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.style.display = !q || item.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrap = btn.closest('.tabs');
+    const target = btn.dataset.tab;
+    wrap.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    wrap.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    wrap.querySelector(`#${target}`)?.classList.add('active');
+  });
+});
+document.querySelectorAll('.product-gallery').forEach(gallery => {
+  const main = gallery.querySelector('.gallery-main img');
+  gallery.querySelectorAll('.thumb').forEach(btn => btn.addEventListener('click', () => {
+    gallery.querySelectorAll('.thumb').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const img = btn.querySelector('img');
+    if(main && img){ main.src = img.src; main.alt = img.alt; }
+  }));
+  gallery.querySelector('.gallery-main')?.addEventListener('click', () => {
+    const lb = document.querySelector('.lightbox');
+    const lbImg = lb?.querySelector('img');
+    if(lb && lbImg && main){ lbImg.src = main.src; lbImg.alt = main.alt; lb.classList.add('open'); }
+  });
+});
+document.querySelector('.lightbox')?.addEventListener('click', e => e.currentTarget.classList.remove('open'));
+document.querySelectorAll('form[data-validate]').forEach(form => {
+  form.addEventListener('submit', e => {
+    const required = Array.from(form.querySelectorAll('[required]'));
+    const invalid = required.find(field => !field.value.trim());
+    if(invalid){
+      e.preventDefault();
+      invalid.focus();
+      invalid.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  });
+});

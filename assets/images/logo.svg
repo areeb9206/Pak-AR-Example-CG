@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="74" viewBox="0 0 310 74" role="img" aria-labelledby="title desc">
+  <title id="title">Pak Ar International Logo</title>
+  <desc id="desc">Pak Ar International packaging manufacturer wordmark</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7a3c"/>
+      <stop offset="1" stop-color="#f5b700"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="66" height="66" rx="18" fill="#fff" stroke="url(#g)" stroke-width="6"/>
+  <path d="M23 49V23h17.6c9.3 0 15.1 5.1 15.1 13.1s-5.8 12.9-15.1 12.9H31v-7.8h9c4.5 0 7-1.8 7-5.1s-2.5-5.2-7-5.2H31V49h-8z" fill="#0e7a3c"/>
+  <path d="M48 51c5-6.4 8-12.2 8.5-21.5 5.9 5.6 6.9 15.3 1.2 21.4-2.7 2.9-6.3 4.7-9.7 5.2v-5.1z" fill="#f5b700"/>
+  <text x="86" y="34" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="800" fill="#123728" letter-spacing=".4">PAK AR</text>
+  <text x="86" y="56" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0e7a3c" letter-spacing="2.2">INTERNATIONAL</text>
+</svg>

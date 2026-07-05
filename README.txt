@@ -1,36 +1,20 @@
-Pak Ar International upgraded static website
+Pak Ar International Website
 
-Folder-based URL structure is ready for hosting:
-- Home: /index.html
-- About: /about/index.html
-- Products: /products/index.html
-- Product details: /products/product-name/index.html
-- FAQ: /faq/index.html
-- Contact: /contact/index.html
+Upload all files and folders to public_html. Keep the assets folder in the root.
 
-Upload the contents of this folder to the domain root / public_html. After hosting, links will show as /about/, /products/, /contact/ instead of .html.
+Folder URLs are ready, so links open like /about/, /products/, /contact/ without showing .html.
 
-Included features:
-- Responsive layout for mobile, tablet and desktop
-- Sticky header with mobile menu
-- Product dropdown
-- Product search and category filters
-- Product comparison dock
-- FAQ accordion and FAQ search
-- Product detail tabs
-- Quick product guide
-- Contact forms that open WhatsApp with prepared message
-- Google Maps embed on contact page
-- Scroll progress bar, reveal effects, counters, back-to-top button
+Contact forms use FormSubmit and send to pakarinternational@gmail.com. The first submission may require email activation from FormSubmit.
 
-To change map location:
-Open contact/index.html and replace the Google Maps search query with the exact office address or coordinates.
-
-
-IMPORTANT FIX:
-This version uses relative asset paths, so CSS/JS will load correctly even when you open it from a subfolder, local server, GitHub Pages, or public_html.
-
-For best testing, open it with a local server instead of double-clicking files:
-- VS Code Live Server, or
-- python -m http.server 8000
-Then open http://localhost:8000/
+Main files:
+- index.html
+- about/index.html
+- products/index.html
+- product detail folders inside products/
+- faq/index.html
+- contact/index.html
+- thank-you/index.html
+- assets/css/styles.css
+- assets/js/app.js
+- sitemap.xml
+- robots.txt
