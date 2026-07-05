@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" role="img" aria-label="nonwoven packaging illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f8fbf3"/><stop offset="1" stop-color="#e6f2d4"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="15" flood-opacity=".14"/></filter></defs>
+  <rect width="640" height="460" rx="34" fill="url(#g)"/>
+  <circle cx="520" cy="88" r="72" fill="#f1c75b" opacity=".3"/>
+  <circle cx="96" cy="390" r="88" fill="#0f3d2e" opacity=".08"/>
+  <g filter="url(#s)">
+    <path d="M176 128h236l40 254H136l40-254Z" fill="#fff"/>
+    <path d="M239 128c3-58 108-58 112 0" fill="none" stroke="#0f3d2e" stroke-width="18" stroke-linecap="round"/>
+    <path d="M190 230h210" stroke="#b7d56a" stroke-width="18" stroke-linecap="round"/>
+    <path d="M205 278h160" stroke="#f1c75b" stroke-width="18" stroke-linecap="round"/>
+    <path d="M214 333c55-46 118-35 158 12-53-4-84 14-106 55-7-31-22-54-52-67Z" fill="#0f3d2e" opacity=".82"/>
+  </g>
+</svg>

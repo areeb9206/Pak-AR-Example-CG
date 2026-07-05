@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-label="Premium eco packaging illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#eaf6db"/><stop offset="1" stop-color="#fdf8e9"/>
+    </linearGradient>
+    <linearGradient id="bag" x1="0" x2="1">
+      <stop stop-color="#0f3d2e"/><stop offset="1" stop-color="#256d4f"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="22" stdDeviation="18" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="900" height="650" rx="42" fill="url(#bg)"/>
+  <circle cx="710" cy="100" r="75" fill="#f1c75b" opacity=".35"/>
+  <circle cx="160" cy="520" r="120" fill="#b7d56a" opacity=".25"/>
+  <g filter="url(#shadow)">
+    <path d="M230 180h280l48 340H190l40-340Z" fill="url(#bag)"/>
+    <path d="M320 180c4-72 112-72 116 0" fill="none" stroke="#f7f0da" stroke-width="22" stroke-linecap="round"/>
+    <path d="M275 290c80-68 173-40 225 32-82-9-126 16-160 78-10-42-30-78-65-110Z" fill="#b7d56a"/>
+    <text x="265" y="455" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#fff">PAK AR</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="560" y="250" width="180" height="260" rx="34" fill="#fff"/>
+    <path d="M610 250c4-50 78-50 82 0" fill="none" stroke="#0f3d2e" stroke-width="14" stroke-linecap="round"/>
+    <path d="M594 360h112" stroke="#f1c75b" stroke-width="14" stroke-linecap="round"/>
+    <path d="M596 405h88" stroke="#b7d56a" stroke-width="14" stroke-linecap="round"/>
+  </g>
+</svg>
